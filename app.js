@@ -40,7 +40,11 @@ const displayController = (() => {
     blockBtn.textContent = mark;
   };
 
-  return { displayBoard, displayMark };
+  const displayWinner = (winner) => {
+    console.log(winner);
+  };
+
+  return { displayBoard, displayMark, displayWinner };
 })();
 
 const gameController = (() => {
@@ -113,12 +117,23 @@ const gameController = (() => {
         gameBoard.board[pattern[0]] === gameBoard.board[pattern[1]] &&
         gameBoard.board[pattern[0]] === gameBoard.board[pattern[2]]
       ) {
-        console.log('game over');
+        return gameBoard.board[pattern[0]];
+        // findWinner(gameBoard.board[pattern[0]]);
       }
     };
-    if (target.length > 4) {
-      //check if target.length > 4 (then, compare with winPattern)
-      //5 times is minimum size for deciding winner
+    const findWinner = (mark) => {
+      let winner;
+      if (mark === player1.mark) {
+        winner = player1;
+      } else {
+        winner = player2;
+      }
+      return winner;
+      // displayController.displayWinner(winner);
+    };
+
+    const findSameWiningPattern = () => {
+      let findPattern;
       winingPatterns.forEach((pattern) => {
         //compare pattern one by one
         //now pattern is single array
@@ -129,9 +144,26 @@ const gameController = (() => {
         if (check) {
           //looks like there are marks in a row or a tie
           //it is time to check if their marks are same
-          checkIfSameMark(pattern);
+          findPattern = pattern;
         }
       });
+      return findPattern;
+    };
+
+    if (target.length > 4) {
+      //check if target.length > 4 (then, compare with winPattern)
+      //5 times is minimum size for deciding winner
+      let pattern = findSameWiningPattern();
+      let mark;
+      let winner;
+      if (pattern) {
+        mark = checkIfSameMark(pattern);
+        if (mark) {
+          //find and display winner on the screen
+          winner = findWinner(mark);
+          displayController.displayWinner(winner);
+        }
+      }
     }
   };
 })();
