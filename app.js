@@ -39,49 +39,48 @@ const displayController = (() => {
     container.innerHTML = formatted;
   };
 
-  //*** Add mark function ***/
-  const displayMark = (player1Mark, player2Mark) => {
-    const blockBtns = document.querySelectorAll('.block');
-    let player = player1Mark;
-
-    const switchPlayer = () => {
-      if (player === player1Mark) {
-        player = player2Mark;
-      } else {
-        player = player1Mark;
-      }
-    };
-
-    blockBtns.forEach((blockBtn, index) => {
-      blockBtn.addEventListener('click', () => {
-        //keeps players from playing in spots that are already taken
-        if (blockBtn.textContent === player) {
-          //if click btn is already taken, don't add mark
-          return;
-        }
-        //change the text
-        blockBtn.textContent = player;
-
-        gameBoard.modifyBoard(index, player);
-        console.log(gameBoard.board);
-
-        //switch player
-        switchPlayer();
-      });
-    });
+  //*** display mark function ***/
+  const displayMark = (blockBtn, mark) => {
+    if (blockBtn.textContent === mark) {
+      //if click btn is already taken, don't add mark
+      return;
+    }
+    //change the text
+    blockBtn.textContent = mark;
   };
 
   return { displayBoard, displayMark };
 })();
+
 const gameController = (() => {
   const player1 = player('O');
   const player2 = player('X');
+  let currentplayer = player1.mark;
 
   //display the board on the screen
   displayController.displayBoard();
 
-  //add game mark
-  displayController.displayMark(player1.mark, player2.mark);
+  const switchPlayer = () => {
+    if (currentplayer === player1.mark) {
+      currentplayer = player2.mark;
+    } else {
+      currentplayer = player1.mark;
+    }
+  };
+
+  //allow players to add mark on the board
+  const blockBtns = document.querySelectorAll('.block');
+
+  blockBtns.forEach((blockBtn, index) => {
+    blockBtn.addEventListener('click', () => {
+      displayController.displayMark(blockBtn, currentplayer);
+
+      gameBoard.modifyBoard(index, currentplayer);
+      console.log(gameBoard.board);
+
+      switchPlayer();
+    });
+  });
 
   //move addEvent here
 })();
