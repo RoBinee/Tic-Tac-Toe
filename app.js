@@ -78,8 +78,19 @@ const gameController = (() => {
     });
   });
 
+  const winingPattern = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
   const blocksArr = [];
   const checkIfGameIsOver = (board) => {
+    //check if every board element is filled with something
     board.forEach((value, index) => {
       if (value != '') {
         //the value is filled with mark
@@ -95,5 +106,7 @@ const gameController = (() => {
       }
     });
     console.log(blocksArr);
+    //or check if blocksArr.length > 4 (then, compare with winPattern)
+    //5 times is minimum size for deciding winner
   };
 })();
