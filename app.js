@@ -36,27 +36,34 @@ const displayController = (() => {
   };
 
   //*** Add mark function ***/
-  const addMark = () => {
-    //make blockBtns clickable
+  const addMark = (player1Mark, player2Mark) => {
     const blockBtns = document.querySelectorAll('.block');
+    let player = player1Mark;
+
+    const switchPlayer = () => {
+      if (player === player1Mark) {
+        player = player2Mark;
+      } else {
+        player = player1Mark;
+      }
+    };
 
     blockBtns.forEach((blockBtn, index) => {
       blockBtn.addEventListener('click', () => {
         //keeps players from playing in spots that are already taken
-        if (blockBtn.textContent === 'O') {
+        if (blockBtn.textContent === player) {
           //if click btn is already taken, don't add mark
           return;
         }
-        //change the value
-        blockBtn.textContent = 'O';
+        //change the text
+        blockBtn.textContent = player;
 
-        //Using index, find blockBtn order in gameBoard.board and modify gameBoard.board too
-        gameBoard.board[index] = 'O';
-        // console.log(gameBoard.board);
+        //modify gameBoard.board value
+        gameBoard.board[index] = player;
+        console.log(gameBoard.board);
 
         //switch player
-
-        // switch player end
+        switchPlayer();
       });
     });
   };
@@ -64,8 +71,10 @@ const displayController = (() => {
   return { displayBoard, addMark };
 })();
 const gameController = (() => {
+  const player1 = player('O');
+  const player2 = player('X');
   //display the board on the screen
   displayController.displayBoard();
   //add game mark
-  displayController.addMark();
+  displayController.addMark(player1.mark, player2.mark);
 })();
