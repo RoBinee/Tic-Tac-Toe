@@ -88,25 +88,30 @@ const gameController = (() => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  const blocksArr = [];
+  const target = [];
   const checkIfGameIsOver = (board) => {
     //check if every board element is filled with something
     board.forEach((value, index) => {
       if (value != '') {
         //the value is filled with mark
         //if blocks is already filled with this index, don't push it
-        if (blocksArr.includes(index)) {
+        if (target.includes(index)) {
           return;
         } else {
-          blocksArr.push(index);
+          target.push(index);
         }
       } else {
         //player haven't choose this block
         return;
       }
     });
-    console.log(blocksArr);
-    //or check if blocksArr.length > 4 (then, compare with winPattern)
+    // console.log(target);
+    //or check if target.length > 4 (then, compare with winPattern)
     //5 times is minimum size for deciding winner
+
+    winingPatterns.forEach((pattern) => {
+      //compare pattern one by one
+      //now pattern is single array
+    });
   };
 })();
