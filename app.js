@@ -89,6 +89,7 @@ const gameController = (() => {
     [2, 4, 6],
   ];
   const target = [];
+
   const checkIfGameIsOver = (board) => {
     //check if every board element is filled with something
     board.forEach((value, index) => {
@@ -106,12 +107,29 @@ const gameController = (() => {
       }
     });
     // console.log(target);
+
+    const checkIfSameMark = (pattern) => {
+      if (
+        gameBoard.board[pattern[0]] === gameBoard.board[pattern[1]] &&
+        gameBoard.board[pattern[0]] === gameBoard.board[pattern[2]]
+      ) {
+        console.log('game over');
+      }
+    };
     //or check if target.length > 4 (then, compare with winPattern)
     //5 times is minimum size for deciding winner
-
     winingPatterns.forEach((pattern) => {
       //compare pattern one by one
       //now pattern is single array
+      const check = pattern.every((value) => {
+        return target.includes(value);
+      });
+
+      if (check) {
+        //looks like there are marks in a row or a tie
+        //it is time to check if their marks are same
+        checkIfSameMark(pattern);
+      }
     });
   };
 })();
