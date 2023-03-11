@@ -2,12 +2,20 @@ const gameBoard = (() => {
   //Module pattern -> use only once
 
   //create board
-  let board = ['X', 'X'];
+  let board = [];
+
+  for (let i = 0; i < 9; i++) {
+    board.push(' ');
+  }
 
   return { board };
 })();
 
-const DOM = (() => {
+const player = (mark) => {
+  return { mark };
+};
+
+const displayController = (() => {
   //Module pattern -> use only once
 
   //*** Display board function ***/
@@ -25,35 +33,39 @@ const DOM = (() => {
 
     //inset formatted element in the container
     container.innerHTML = formatted;
-    console.log('display Board work');
   };
 
-  displayBoard();
-
   //*** Add mark function ***/
-  //make blockBtns clickable
-  const blockBtns = document.querySelectorAll('.block');
-  blockBtns.forEach((blockBtn, index) => {
-    //use index instead of id
-    blockBtn.addEventListener('click', () => {
-      //keeps players from playing in spots that are already taken
-      if (blockBtn.textContent === 'O') {
-        //if click btn is already taken, don't add mark
-        return;
-      }
-      console.log('add mark');
-      //change the value
-      blockBtn.textContent = 'O';
-      //change gameBoard.board too
-      //Using index, find blockBtn order in gameBoard.board
-      gameBoard.board[index] = 'O';
+  const addMark = () => {
+    //make blockBtns clickable
+    const blockBtns = document.querySelectorAll('.block');
 
-      console.log(gameBoard.board);
+    blockBtns.forEach((blockBtn, index) => {
+      blockBtn.addEventListener('click', () => {
+        //keeps players from playing in spots that are already taken
+        if (blockBtn.textContent === 'O') {
+          //if click btn is already taken, don't add mark
+          return;
+        }
+        //change the value
+        blockBtn.textContent = 'O';
+
+        //Using index, find blockBtn order in gameBoard.board and modify gameBoard.board too
+        gameBoard.board[index] = 'O';
+        // console.log(gameBoard.board);
+
+        //switch player
+
+        // switch player end
+      });
     });
-  });
+  };
 
-  // return { displayBoard };
+  return { displayBoard, addMark };
 })();
-const game = () => {
-  console.log('game start');
-};
+const gameController = (() => {
+  //display the board on the screen
+  displayController.displayBoard();
+  //add game mark
+  displayController.addMark();
+})();
