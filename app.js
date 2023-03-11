@@ -22,14 +22,11 @@ const player = (mark) => {
 const displayController = (() => {
   //Module pattern -> use only once
 
-  //*** Display board function ***/
   const displayBoard = () => {
-    //**display gameBoard.board on the screen
     const container = document.querySelector('.gameboard-container');
 
-    //format every board content
-    const board = gameBoard.board;
-    const formatted = board
+    //formatting
+    const formatted = gameBoard.board
       .map((element) => {
         return `<button class="block">${element}</button>`;
       })
@@ -39,7 +36,6 @@ const displayController = (() => {
     container.innerHTML = formatted;
   };
 
-  //*** display mark function ***/
   const displayMark = (blockBtn, mark) => {
     if (blockBtn.textContent === mark) {
       //if click btn is already taken, don't add mark
