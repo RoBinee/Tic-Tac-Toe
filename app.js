@@ -25,19 +25,18 @@ const displayController = (() => {
   const displayBoard = () => {
     const container = document.querySelector('.gameboard-container');
 
-    //formatting
     const formatted = gameBoard.board
       .map((element) => {
         return `<button class="block">${element}</button>`;
       })
       .join('');
 
-    //inset formatted element in the container
+    //put formatted element in the container
     container.innerHTML = formatted;
   };
 
   const displayMark = (blockBtn, mark) => {
-    //change the text
+    //fill the empty block with mark
     blockBtn.textContent = mark;
   };
 
@@ -72,11 +71,29 @@ const gameController = (() => {
       displayController.displayMark(blockBtn, currentplayer);
 
       gameBoard.modifyBoard(index, currentplayer);
-      console.log(gameBoard.board);
+
+      checkIfGameIsOver(gameBoard.board);
 
       switchPlayer();
     });
   });
 
-  //move addEvent here
+  const blocksArr = [];
+  const checkIfGameIsOver = (board) => {
+    board.forEach((value, index) => {
+      if (value != '') {
+        //the value is filled with mark
+        //if blocks is already filled with this index, don't push it
+        if (blocksArr.includes(index)) {
+          return;
+        } else {
+          blocksArr.push(index);
+        }
+      } else {
+        //player haven't choose this block
+        return;
+      }
+    });
+    console.log(blocksArr);
+  };
 })();
