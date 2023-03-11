@@ -5,7 +5,7 @@ const gameBoard = (() => {
   let board = [];
 
   for (let i = 0; i < 9; i++) {
-    board.push(' ');
+    board.push('');
   }
 
   const modifyBoard = (index, mark) => {
@@ -37,10 +37,6 @@ const displayController = (() => {
   };
 
   const displayMark = (blockBtn, mark) => {
-    if (blockBtn.textContent === mark) {
-      //if click btn is already taken, don't add mark
-      return;
-    }
     //change the text
     blockBtn.textContent = mark;
   };
@@ -69,6 +65,10 @@ const gameController = (() => {
 
   blockBtns.forEach((blockBtn, index) => {
     blockBtn.addEventListener('click', () => {
+      if (blockBtn.textContent != '') {
+        //if click btn is already taken, don't add mark
+        return;
+      }
       displayController.displayMark(blockBtn, currentplayer);
 
       gameBoard.modifyBoard(index, currentplayer);
