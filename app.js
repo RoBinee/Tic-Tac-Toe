@@ -116,20 +116,22 @@ const gameController = (() => {
         console.log('game over');
       }
     };
-    //or check if target.length > 4 (then, compare with winPattern)
-    //5 times is minimum size for deciding winner
-    winingPatterns.forEach((pattern) => {
-      //compare pattern one by one
-      //now pattern is single array
-      const check = pattern.every((value) => {
-        return target.includes(value);
-      });
+    if (target.length > 4) {
+      //check if target.length > 4 (then, compare with winPattern)
+      //5 times is minimum size for deciding winner
+      winingPatterns.forEach((pattern) => {
+        //compare pattern one by one
+        //now pattern is single array
+        const check = pattern.every((value) => {
+          return target.includes(value);
+        });
 
-      if (check) {
-        //looks like there are marks in a row or a tie
-        //it is time to check if their marks are same
-        checkIfSameMark(pattern);
-      }
-    });
+        if (check) {
+          //looks like there are marks in a row or a tie
+          //it is time to check if their marks are same
+          checkIfSameMark(pattern);
+        }
+      });
+    }
   };
 })();
