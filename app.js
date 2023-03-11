@@ -40,7 +40,7 @@ const displayController = (() => {
   };
 
   //*** Add mark function ***/
-  const addMark = (player1Mark, player2Mark) => {
+  const displayMark = (player1Mark, player2Mark) => {
     const blockBtns = document.querySelectorAll('.block');
     let player = player1Mark;
 
@@ -71,7 +71,7 @@ const displayController = (() => {
     });
   };
 
-  return { displayBoard, addMark };
+  return { displayBoard, displayMark };
 })();
 const gameController = (() => {
   const player1 = player('O');
@@ -80,10 +80,8 @@ const gameController = (() => {
   //display the board on the screen
   displayController.displayBoard();
 
-  const test = document.querySelectorAll('button');
-  console.log(test);
   //add game mark
-  displayController.addMark(player1.mark, player2.mark);
+  displayController.displayMark(player1.mark, player2.mark);
 
   //move addEvent here
 })();
