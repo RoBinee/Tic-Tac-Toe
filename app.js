@@ -8,7 +8,11 @@ const gameBoard = (() => {
     board.push(' ');
   }
 
-  return { board };
+  const modifyBoard = (index, mark) => {
+    board[index] = mark;
+  };
+
+  return { board, modifyBoard };
 })();
 
 const player = (mark) => {
@@ -58,8 +62,7 @@ const displayController = (() => {
         //change the text
         blockBtn.textContent = player;
 
-        //modify gameBoard.board value
-        gameBoard.board[index] = player;
+        gameBoard.modifyBoard(index, player);
         console.log(gameBoard.board);
 
         //switch player
@@ -73,8 +76,14 @@ const displayController = (() => {
 const gameController = (() => {
   const player1 = player('O');
   const player2 = player('X');
+
   //display the board on the screen
   displayController.displayBoard();
+
+  const test = document.querySelectorAll('button');
+  console.log(test);
   //add game mark
   displayController.addMark(player1.mark, player2.mark);
+
+  //move addEvent here
 })();
