@@ -92,6 +92,8 @@ const gameController = (() => {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
+  //target to check if it includes wining pattern
   const target = [];
 
   const checkIfGameIsOver = (board) => {
@@ -162,6 +164,7 @@ const gameController = (() => {
           //find and display winner on the screen
           winner = findWinner(mark);
           displayController.displayWinner(winner);
+          //next step -> reset the board!
         }
       }
     }
