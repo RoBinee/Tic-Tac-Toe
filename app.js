@@ -15,8 +15,8 @@ const gameBoard = (() => {
   return { board, modifyBoard };
 })();
 
-const player = (mark) => {
-  return { mark };
+const player = (name, mark) => {
+  return { name, mark };
 };
 
 const displayController = (() => {
@@ -48,8 +48,8 @@ const displayController = (() => {
 })();
 
 const gameController = (() => {
-  const player1 = player('O');
-  const player2 = player('X');
+  const player1 = player('player1', 'O');
+  const player2 = player('player2', 'X');
   let currentplayer = player1.mark;
 
   //display the board on the screen
@@ -141,11 +141,10 @@ const gameController = (() => {
       let mark;
 
       winingPatterns.forEach((pattern) => {
-        //compare pattern one by one
-        //now pattern is single array
-        let check = pattern.every((value) => {
-          return target.includes(value);
-          //as soon as find one -> immediately go and find if they are same mark
+        //compare pattern one by one, now pattern is single array
+        //compare all the numbers of pattern is included in target array
+        let check = pattern.every((num) => {
+          return target.includes(num);
         });
 
         if (check) {
@@ -153,10 +152,11 @@ const gameController = (() => {
           mark = checkIfSameMark(pattern);
           if (mark) {
             result = mark;
-            return;
+            // return doesn't work in forEach
           }
         }
       });
+      //return value from checkPattern method
       return result;
     };
 
