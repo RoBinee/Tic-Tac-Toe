@@ -1,7 +1,6 @@
 const gameBoard = (() => {
   //Module pattern -> use only once
 
-  //create board
   let board = [];
 
   const makeEmptyElements = (() => {
@@ -50,13 +49,14 @@ const displayController = (() => {
   const displayWinner = ({ name }) => {
     const desc = document.querySelector('.desc');
     desc.textContent = `The winner is ${name}`;
-    // console.log(winner);
   };
 
   return { displayBoard, displayMark, displayWinner };
 })();
 
 const gameController = (() => {
+  const blockBtns = document.querySelectorAll('.block');
+  //initial setting
   const player1 = player('player1', 'O');
   const player2 = player('player2', 'X');
   let currentplayer = player1;
@@ -64,18 +64,18 @@ const gameController = (() => {
   //display the board on the screen
   displayController.displayBoard();
 
-  const switchPlayer = () => {
-    if (currentplayer === player1) {
-      currentplayer = player2;
-    } else {
-      currentplayer = player1;
-    }
-  };
-
   const startPlay = (e) => {
     const blockBtn = e.currentTarget;
     const nodes = [...e.currentTarget.parentElement.children];
     const index = nodes.indexOf(blockBtn);
+
+    const switchPlayer = () => {
+      if (currentplayer === player1) {
+        currentplayer = player2;
+      } else {
+        currentplayer = player1;
+      }
+    };
 
     if (blockBtn.textContent != '') {
       //if click btn is already taken, don't add mark
@@ -85,7 +85,7 @@ const gameController = (() => {
 
     gameBoard.modifyBoard(index, currentplayer.mark);
 
-    checkIfGameIsOver(gameBoard.board);
+    checkIfGameIsOver();
 
     switchPlayer();
   };
@@ -96,30 +96,12 @@ const gameController = (() => {
     });
   };
 
-  //allow players to add mark on the board
-  const blockBtns = document.querySelectorAll('.block');
+  const checkIfGameIsOver = () => {
+    const board = gameBoard.board;
+    const target = [];
+    //target to check if it includes wining pattern
 
-  blockBtns.forEach((blockBtn) => {
-    blockBtn.addEventListener('click', startPlay);
-  });
-
-  const winingPatterns = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  //target to check if it includes wining pattern
-  const target = [];
-
-  const checkIfGameIsOver = (board) => {
-    //check if every board element is filled with something
-    board.forEach((value, index) => {
+    const addToTarget = (value, index) => {
       if (value != '') {
         //the value is filled with mark
         //if blocks is already filled with this index, don't push it
@@ -132,8 +114,7 @@ const gameController = (() => {
         //player haven't choose this block
         return;
       }
-    });
-    // console.log(target);
+    };
 
     const checkIfSameMark = (pattern) => {
       const board = gameBoard.board;
@@ -159,6 +140,16 @@ const gameController = (() => {
       //return the mark
       let result;
       let mark;
+      const winingPatterns = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
 
       winingPatterns.forEach((pattern) => {
         //compare pattern one by one, now pattern is single array
@@ -180,6 +171,11 @@ const gameController = (() => {
       return result;
     };
 
+    //check if every board element is filled with something
+    board.forEach((value, index) => {
+      addToTarget(value, index);
+    });
+
     if (target.length > 4) {
       //check if target.length > 4 (then, compare with winPattern)
       //5 times is minimum size for deciding winner
@@ -195,4 +191,10 @@ const gameController = (() => {
       }
     }
   };
+
+  // eventListener
+  //allow players to add mark on the board
+  blockBtns.forEach((blockBtn) => {
+    blockBtn.addEventListener('click', startPlay);
+  });
 })();
