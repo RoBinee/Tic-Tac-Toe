@@ -65,7 +65,7 @@ const gameController = (() => {
     }
   };
 
-  const playRound = (e) => {
+  const startPlay = (e) => {
     const blockBtn = e.currentTarget;
     const nodes = [...e.currentTarget.parentElement.children];
     const index = nodes.indexOf(blockBtn);
@@ -83,28 +83,18 @@ const gameController = (() => {
     switchPlayer();
   };
 
+  const endPlay = () => {
+    blockBtns.forEach((blockBtn) => {
+      blockBtn.removeEventListener('click', startPlay);
+    });
+  };
+
   //allow players to add mark on the board
   const blockBtns = document.querySelectorAll('.block');
 
   blockBtns.forEach((blockBtn) => {
-    blockBtn.addEventListener('click', playRound);
+    blockBtn.addEventListener('click', startPlay);
   });
-
-  // blockBtns.forEach((blockBtn, index) => {
-  //   blockBtn.addEventListener('click', () => {
-  //     if (blockBtn.textContent != '') {
-  //       //if click btn is already taken, don't add mark
-  //       return;
-  //     }
-  //     displayController.displayMark(blockBtn, currentplayer.mark);
-
-  //     gameBoard.modifyBoard(index, currentplayer.mark);
-
-  //     checkIfGameIsOver(gameBoard.board);
-
-  //     switchPlayer();
-  //   });
-  // });
 
   const winingPatterns = [
     [0, 1, 2],
@@ -193,9 +183,7 @@ const gameController = (() => {
         winner = findWinner(winnerMark);
         displayController.displayWinner(winner);
         //end the game
-        blockBtns.forEach((blockBtn) => {
-          blockBtn.removeEventListener('click', playRound);
-        });
+        endPlay();
       }
     }
   };
