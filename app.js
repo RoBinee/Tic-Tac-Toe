@@ -52,16 +52,16 @@ const displayController = (() => {
 const gameController = (() => {
   const player1 = player('player1', 'O');
   const player2 = player('player2', 'X');
-  let currentplayer = player1.mark;
+  let currentplayer = player1;
 
   //display the board on the screen
   displayController.displayBoard();
 
   const switchPlayer = () => {
-    if (currentplayer === player1.mark) {
-      currentplayer = player2.mark;
+    if (currentplayer === player1) {
+      currentplayer = player2;
     } else {
-      currentplayer = player1.mark;
+      currentplayer = player1;
     }
   };
 
@@ -74,9 +74,9 @@ const gameController = (() => {
         //if click btn is already taken, don't add mark
         return;
       }
-      displayController.displayMark(blockBtn, currentplayer);
+      displayController.displayMark(blockBtn, currentplayer.mark);
 
-      gameBoard.modifyBoard(index, currentplayer);
+      gameBoard.modifyBoard(index, currentplayer.mark);
 
       checkIfGameIsOver(gameBoard.board);
 
