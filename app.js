@@ -134,38 +134,41 @@ const gameController = (() => {
       // displayController.displayWinner(winner);
     };
 
-    const findSameWiningPattern = () => {
-      let findPattern;
+    const checkPattern = () => {
+      //findWiningPattern and check if their makes are the same
+      //return the mark
+      let result;
+      let mark;
+
       winingPatterns.forEach((pattern) => {
         //compare pattern one by one
         //now pattern is single array
-        const check = pattern.every((value) => {
+        let check = pattern.every((value) => {
           return target.includes(value);
+          //as soon as find one -> immediately go and find if they are same mark
         });
 
         if (check) {
           //looks like there are marks in a row or a tie
-          //it is time to check if their marks are same
-          findPattern = pattern;
+          mark = checkIfSameMark(pattern);
+          if (mark) {
+            result = mark;
+            return;
+          }
         }
       });
-      return findPattern;
+      return result;
     };
 
     if (target.length > 4) {
       //check if target.length > 4 (then, compare with winPattern)
       //5 times is minimum size for deciding winner
-      let pattern = findSameWiningPattern();
-      let mark;
+      let mark = checkPattern();
       let winner;
-      if (pattern) {
-        mark = checkIfSameMark(pattern);
-        if (mark) {
-          //find and display winner on the screen
-          winner = findWinner(mark);
-          displayController.displayWinner(winner);
-          //next step -> reset the board!
-        }
+
+      if (mark) {
+        winner = findWinner(mark);
+        displayController.displayWinner(winner);
       }
     }
   };
