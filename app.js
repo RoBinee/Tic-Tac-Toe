@@ -162,11 +162,11 @@ const gameController = (() => {
     if (target.length > 4) {
       //check if target.length > 4 (then, compare with winPattern)
       //5 times is minimum size for deciding winner
-      let mark = checkPattern();
+      let winnerMark = checkPattern();
       let winner;
 
-      if (mark) {
-        winner = findWinner(mark);
+      if (winnerMark) {
+        winner = findWinner(winnerMark);
         displayController.displayWinner(winner);
       }
     }
