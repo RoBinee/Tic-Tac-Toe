@@ -4,15 +4,22 @@ const gameBoard = (() => {
   //create board
   let board = [];
 
-  for (let i = 0; i < 9; i++) {
-    board.push('');
-  }
+  const makeEmptyElements = (() => {
+    for (let i = 0; i < 9; i++) {
+      board.push('');
+    }
+  })();
+
+  const resetArray = () => {
+    board = [];
+    makeEmptyElements();
+  };
 
   const modifyBoard = (index, mark) => {
     board[index] = mark;
   };
 
-  return { board, modifyBoard };
+  return { board, resetArray, modifyBoard };
 })();
 
 const player = (name, mark) => {
@@ -184,6 +191,7 @@ const gameController = (() => {
         displayController.displayWinner(winner);
         //end the game
         endPlay();
+        //display the restart button
       }
     }
   };
