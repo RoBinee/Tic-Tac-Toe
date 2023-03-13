@@ -65,24 +65,46 @@ const gameController = (() => {
     }
   };
 
+  const playRound = (e) => {
+    const blockBtn = e.currentTarget;
+    const nodes = [...e.currentTarget.parentElement.children];
+    const index = nodes.indexOf(blockBtn);
+
+    if (blockBtn.textContent != '') {
+      //if click btn is already taken, don't add mark
+      return;
+    }
+    displayController.displayMark(blockBtn, currentplayer.mark);
+
+    gameBoard.modifyBoard(index, currentplayer.mark);
+
+    checkIfGameIsOver(gameBoard.board);
+
+    switchPlayer();
+  };
+
   //allow players to add mark on the board
   const blockBtns = document.querySelectorAll('.block');
 
-  blockBtns.forEach((blockBtn, index) => {
-    blockBtn.addEventListener('click', () => {
-      if (blockBtn.textContent != '') {
-        //if click btn is already taken, don't add mark
-        return;
-      }
-      displayController.displayMark(blockBtn, currentplayer.mark);
-
-      gameBoard.modifyBoard(index, currentplayer.mark);
-
-      checkIfGameIsOver(gameBoard.board);
-
-      switchPlayer();
-    });
+  blockBtns.forEach((blockBtn) => {
+    blockBtn.addEventListener('click', playRound);
   });
+
+  // blockBtns.forEach((blockBtn, index) => {
+  //   blockBtn.addEventListener('click', () => {
+  //     if (blockBtn.textContent != '') {
+  //       //if click btn is already taken, don't add mark
+  //       return;
+  //     }
+  //     displayController.displayMark(blockBtn, currentplayer.mark);
+
+  //     gameBoard.modifyBoard(index, currentplayer.mark);
+
+  //     checkIfGameIsOver(gameBoard.board);
+
+  //     switchPlayer();
+  //   });
+  // });
 
   const winingPatterns = [
     [0, 1, 2],
@@ -171,6 +193,9 @@ const gameController = (() => {
         winner = findWinner(winnerMark);
         displayController.displayWinner(winner);
         //end the game
+        blockBtns.forEach((blockBtn) => {
+          blockBtn.removeEventListener('click', playRound);
+        });
       }
     }
   };
