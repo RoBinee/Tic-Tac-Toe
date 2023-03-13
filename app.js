@@ -115,12 +115,12 @@ const gameController = (() => {
     // console.log(target);
 
     const checkIfSameMark = (pattern) => {
+      const board = gameBoard.board;
       if (
-        gameBoard.board[pattern[0]] === gameBoard.board[pattern[1]] &&
-        gameBoard.board[pattern[0]] === gameBoard.board[pattern[2]]
+        board[pattern[0]] === board[pattern[1]] &&
+        board[pattern[0]] === board[pattern[2]]
       ) {
-        return gameBoard.board[pattern[0]];
-        // findWinner(gameBoard.board[pattern[0]]);
+        return board[pattern[0]];
       }
     };
     const findWinner = (mark) => {
@@ -131,7 +131,6 @@ const gameController = (() => {
         winner = player2;
       }
       return winner;
-      // displayController.displayWinner(winner);
     };
 
     const checkPattern = () => {
