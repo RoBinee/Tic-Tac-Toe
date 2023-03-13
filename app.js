@@ -1,6 +1,7 @@
 const gameBoard = (() => {
   //Module pattern -> use only once
 
+  //create board
   let board = [];
 
   const makeEmptyElements = (() => {
@@ -49,13 +50,21 @@ const displayController = (() => {
   const displayWinner = ({ name }) => {
     const desc = document.querySelector('.desc');
     desc.textContent = `The winner is ${name}`;
+    // console.log(winner);
   };
 
-  return { displayBoard, displayMark, displayWinner };
+  const displayBtn = () => {
+    const container = document.querySelector('.gameboard-container');
+    const btn = document.createElement('button');
+    btn.classList.add('restart');
+    btn.textContent = 'Restart';
+    container.appendChild(btn);
+  };
+
+  return { displayBoard, displayMark, displayWinner, displayBtn };
 })();
 
 const gameController = (() => {
-  const blockBtns = document.querySelectorAll('.block');
   //initial setting
   const player1 = player('player1', 'O');
   const player2 = player('player2', 'X');
@@ -63,6 +72,7 @@ const gameController = (() => {
 
   //display the board on the screen
   displayController.displayBoard();
+  const blockBtns = document.querySelectorAll('.block');
 
   const startPlay = (e) => {
     const blockBtn = e.currentTarget;
@@ -188,12 +198,13 @@ const gameController = (() => {
         //end the game
         endPlay();
         //display the restart button
+        displayController.displayBtn();
       }
     }
   };
+  //allow players to add mark on the board
 
   // eventListener
-  //allow players to add mark on the board
   blockBtns.forEach((blockBtn) => {
     blockBtn.addEventListener('click', startPlay);
   });
