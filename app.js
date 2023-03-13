@@ -40,8 +40,10 @@ const displayController = (() => {
     blockBtn.textContent = mark;
   };
 
-  const displayWinner = (winner) => {
-    console.log(winner);
+  const displayWinner = ({ name }) => {
+    const desc = document.querySelector('.desc');
+    desc.textContent = `The winner is ${name}`;
+    // console.log(winner);
   };
 
   return { displayBoard, displayMark, displayWinner };
@@ -168,6 +170,7 @@ const gameController = (() => {
       if (winnerMark) {
         winner = findWinner(winnerMark);
         displayController.displayWinner(winner);
+        //end the game
       }
     }
   };
