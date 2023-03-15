@@ -46,7 +46,7 @@ const displayController = (() => {
   function displayMark(blockBtn, { mark, color }) {
     //fill the empty block with mark
     blockBtn.textContent = mark;
-    blockBtn.style.backgroundColor = color;
+    blockBtn.style.color = color;
   }
 
   function displayWinner({ name } = false) {
