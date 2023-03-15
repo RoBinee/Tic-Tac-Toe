@@ -48,8 +48,12 @@ const displayController = (() => {
     blockBtn.textContent = mark;
   }
 
-  function displayWinner({ name }) {
+  function displayWinner({ name } = false) {
     const desc = document.querySelector('.desc');
+    if (!name) {
+      desc.textContent = ``;
+      return;
+    }
     desc.textContent = `The winner is ${name}`;
     // console.log(winner);
   }
@@ -73,7 +77,7 @@ const gameController = (() => {
 
   //display the board on the screen
   displayController.displayBoard();
-  const blockBtns = document.querySelectorAll('.block');
+  let blockBtns = document.querySelectorAll('.block');
 
   //allow players to add mark on the board using eventListener
   blockBtns.forEach((blockBtn) => {
@@ -217,13 +221,15 @@ const gameController = (() => {
   function restartPlay() {
     //display empty board on the screen
     gameBoard.resetArray();
-    displayController.displayBoard();
     //addEventlistener for each board
     currentplayer = player1;
     //I have to declare blockBtns again since I display the new board
-    //it is new blockBtns
-    const blockBtns = document.querySelectorAll('.block');
+    //display the board on the screen
+    displayController.displayBoard();
+    displayController.displayWinner();
+    let blockBtns = document.querySelectorAll('.block');
 
+    //allow players to add mark on the board using eventListener
     blockBtns.forEach((blockBtn) => {
       blockBtn.addEventListener('click', startPlay);
     });
