@@ -60,7 +60,7 @@ const displayController = (() => {
   }
 
   function displayBtn() {
-    const container = document.querySelector('.gameboard-container');
+    const container = document.querySelector('.container');
     const btn = document.createElement('button');
     btn.classList.add('restart');
     btn.textContent = 'Restart';
