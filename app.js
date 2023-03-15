@@ -16,15 +16,15 @@ const gameBoard = (() => {
     }
   }
 
-  function modifyBoard(index, mark) {
+  function modifyBoard(index, { mark }) {
     board[index] = mark;
   }
 
   return { board, resetArray, modifyBoard };
 })();
 
-const player = (name, mark) => {
-  return { name, mark };
+const player = (name, mark, color) => {
+  return { name, mark, color };
 };
 
 const displayController = (() => {
@@ -43,9 +43,10 @@ const displayController = (() => {
     container.innerHTML = formatted;
   }
 
-  function displayMark(blockBtn, mark) {
+  function displayMark(blockBtn, { mark, color }) {
     //fill the empty block with mark
     blockBtn.textContent = mark;
+    blockBtn.style.backgroundColor = color;
   }
 
   function displayWinner({ name } = false) {
@@ -71,8 +72,8 @@ const displayController = (() => {
 
 const gameController = (() => {
   //initial setting
-  const player1 = player('player1', 'O');
-  const player2 = player('player2', 'X');
+  const player1 = player('player1', 'O', '#eb737d');
+  const player2 = player('player2', 'X', '#00a5ff');
   let currentplayer = player1;
 
   //display the board on the screen
@@ -93,9 +94,9 @@ const gameController = (() => {
       //if click btn is already taken, don't add mark
       return;
     }
-    displayController.displayMark(blockBtn, currentplayer.mark);
+    displayController.displayMark(blockBtn, currentplayer);
 
-    gameBoard.modifyBoard(index, currentplayer.mark);
+    gameBoard.modifyBoard(index, currentplayer);
 
     checkIfGameIsOver();
 
