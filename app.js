@@ -4,20 +4,22 @@ const gameBoard = (() => {
   //create board
   let board = [];
 
-  const makeEmptyElements = (() => {
+  const makeEmptyElements = () => {
     for (let i = 0; i < 9; i++) {
       board.push('');
     }
-  })();
+  };
 
   const resetArray = () => {
-    board = [];
+    board.length = 0;
     makeEmptyElements();
   };
 
   const modifyBoard = (index, mark) => {
     board[index] = mark;
   };
+
+  makeEmptyElements();
 
   return { board, resetArray, modifyBoard };
 })();
@@ -104,6 +106,11 @@ const gameController = (() => {
     blockBtns.forEach((blockBtn) => {
       blockBtn.removeEventListener('click', startPlay);
     });
+
+    //display the restart button
+    displayController.displayBtn();
+    const btn = document.querySelector('.restart');
+    btn.addEventListener('click', restartPlay);
   };
 
   const checkIfGameIsOver = () => {
@@ -197,15 +204,28 @@ const gameController = (() => {
         displayController.displayWinner(winner);
         //end the game
         endPlay();
-        //display the restart button
-        displayController.displayBtn();
       }
     }
   };
-  //allow players to add mark on the board
 
-  // eventListener
+  //allow players to add mark on the board using eventListener
   blockBtns.forEach((blockBtn) => {
     blockBtn.addEventListener('click', startPlay);
   });
+
+  // 0313
+  const restartPlay = () => {
+    //display empty board on the screen
+    gameBoard.resetArray();
+    displayController.displayBoard();
+    //addEventlistener for each board
+    currentplayer = player1;
+    //I have to declare blockBtns again since I display the new board
+    //it is new blockBtns
+    const blockBtns = document.querySelectorAll('.block');
+
+    blockBtns.forEach((blockBtn) => {
+      blockBtn.addEventListener('click', startPlay);
+    });
+  };
 })();
