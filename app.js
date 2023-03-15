@@ -1,25 +1,24 @@
 const gameBoard = (() => {
   //Module pattern -> use only once
 
-  //create board
   let board = [];
 
-  const makeEmptyElements = () => {
+  makeEmptyElements();
+
+  function resetArray() {
+    board.length = 0;
+    makeEmptyElements();
+  }
+
+  function makeEmptyElements() {
     for (let i = 0; i < 9; i++) {
       board.push('');
     }
-  };
+  }
 
-  const resetArray = () => {
-    board.length = 0;
-    makeEmptyElements();
-  };
-
-  const modifyBoard = (index, mark) => {
+  function modifyBoard(index, mark) {
     board[index] = mark;
-  };
-
-  makeEmptyElements();
+  }
 
   return { board, resetArray, modifyBoard };
 })();
@@ -31,7 +30,7 @@ const player = (name, mark) => {
 const displayController = (() => {
   //Module pattern -> use only once
 
-  const displayBoard = () => {
+  function displayBoard() {
     const container = document.querySelector('.gameboard-container');
 
     const formatted = gameBoard.board
@@ -42,26 +41,26 @@ const displayController = (() => {
 
     //put formatted element in the container
     container.innerHTML = formatted;
-  };
+  }
 
-  const displayMark = (blockBtn, mark) => {
+  function displayMark(blockBtn, mark) {
     //fill the empty block with mark
     blockBtn.textContent = mark;
-  };
+  }
 
-  const displayWinner = ({ name }) => {
+  function displayWinner({ name }) {
     const desc = document.querySelector('.desc');
     desc.textContent = `The winner is ${name}`;
     // console.log(winner);
-  };
+  }
 
-  const displayBtn = () => {
+  function displayBtn() {
     const container = document.querySelector('.gameboard-container');
     const btn = document.createElement('button');
     btn.classList.add('restart');
     btn.textContent = 'Restart';
     container.appendChild(btn);
-  };
+  }
 
   return { displayBoard, displayMark, displayWinner, displayBtn };
 })();
@@ -76,18 +75,15 @@ const gameController = (() => {
   displayController.displayBoard();
   const blockBtns = document.querySelectorAll('.block');
 
-  const startPlay = (e) => {
+  //allow players to add mark on the board using eventListener
+  blockBtns.forEach((blockBtn) => {
+    blockBtn.addEventListener('click', startPlay);
+  });
+
+  function startPlay(e) {
     const blockBtn = e.currentTarget;
     const nodes = [...e.currentTarget.parentElement.children];
     const index = nodes.indexOf(blockBtn);
-
-    const switchPlayer = () => {
-      if (currentplayer === player1) {
-        currentplayer = player2;
-      } else {
-        currentplayer = player1;
-      }
-    };
 
     if (blockBtn.textContent != '') {
       //if click btn is already taken, don't add mark
@@ -100,9 +96,17 @@ const gameController = (() => {
     checkIfGameIsOver();
 
     switchPlayer();
-  };
 
-  const endPlay = () => {
+    function switchPlayer() {
+      if (currentplayer === player1) {
+        currentplayer = player2;
+      } else {
+        currentplayer = player1;
+      }
+    }
+  }
+
+  function endPlay() {
     blockBtns.forEach((blockBtn) => {
       blockBtn.removeEventListener('click', startPlay);
     });
@@ -111,14 +115,33 @@ const gameController = (() => {
     displayController.displayBtn();
     const btn = document.querySelector('.restart');
     btn.addEventListener('click', restartPlay);
-  };
+  }
 
-  const checkIfGameIsOver = () => {
+  function checkIfGameIsOver() {
     const board = gameBoard.board;
-    const target = [];
     //target to check if it includes wining pattern
+    const target = [];
 
-    const addToTarget = (value, index) => {
+    //check if every board element is filled with something
+    board.forEach((value, index) => {
+      addToTarget(value, index);
+    });
+
+    if (target.length > 4) {
+      //check if target.length > 4 (then, compare with winPattern)
+      //5 times is minimum size for deciding winner
+      let winnerMark = checkPattern();
+      let winner;
+
+      if (winnerMark) {
+        winner = findWinner(winnerMark);
+        displayController.displayWinner(winner);
+        //end the game
+        endPlay();
+      }
+    }
+
+    function addToTarget(value, index) {
       if (value != '') {
         //the value is filled with mark
         //if blocks is already filled with this index, don't push it
@@ -131,9 +154,9 @@ const gameController = (() => {
         //player haven't choose this block
         return;
       }
-    };
+    }
 
-    const checkIfSameMark = (pattern) => {
+    function checkIfSameMark(pattern) {
       const board = gameBoard.board;
       if (
         board[pattern[0]] === board[pattern[1]] &&
@@ -141,8 +164,9 @@ const gameController = (() => {
       ) {
         return board[pattern[0]];
       }
-    };
-    const findWinner = (mark) => {
+    }
+
+    function findWinner(mark) {
       let winner;
       if (mark === player1.mark) {
         winner = player1;
@@ -150,9 +174,9 @@ const gameController = (() => {
         winner = player2;
       }
       return winner;
-    };
+    }
 
-    const checkPattern = () => {
+    function checkPattern() {
       //findWiningPattern and check if their makes are the same
       //return the mark
       let result;
@@ -186,35 +210,11 @@ const gameController = (() => {
       });
       //return value from checkPattern method
       return result;
-    };
-
-    //check if every board element is filled with something
-    board.forEach((value, index) => {
-      addToTarget(value, index);
-    });
-
-    if (target.length > 4) {
-      //check if target.length > 4 (then, compare with winPattern)
-      //5 times is minimum size for deciding winner
-      let winnerMark = checkPattern();
-      let winner;
-
-      if (winnerMark) {
-        winner = findWinner(winnerMark);
-        displayController.displayWinner(winner);
-        //end the game
-        endPlay();
-      }
     }
-  };
-
-  //allow players to add mark on the board using eventListener
-  blockBtns.forEach((blockBtn) => {
-    blockBtn.addEventListener('click', startPlay);
-  });
+  }
 
   // 0313
-  const restartPlay = () => {
+  function restartPlay() {
     //display empty board on the screen
     gameBoard.resetArray();
     displayController.displayBoard();
@@ -227,5 +227,5 @@ const gameController = (() => {
     blockBtns.forEach((blockBtn) => {
       blockBtn.addEventListener('click', startPlay);
     });
-  };
+  }
 })();
