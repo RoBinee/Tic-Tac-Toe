@@ -67,7 +67,12 @@ const displayController = (() => {
     container.appendChild(btn);
   }
 
-  return { displayBoard, displayMark, displayWinner, displayBtn };
+  function removeBtn() {
+    const container = document.querySelector('.container');
+    container.removeChild(container.lastChild);
+  }
+
+  return { displayBoard, displayMark, displayWinner, displayBtn, removeBtn };
 })();
 
 const gameController = (() => {
@@ -220,6 +225,8 @@ const gameController = (() => {
 
   // 0313
   function restartPlay() {
+    //remove restart btn
+    displayController.removeBtn();
     //display empty board on the screen
     gameBoard.resetArray();
     //addEventlistener for each board
